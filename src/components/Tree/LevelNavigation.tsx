@@ -15,7 +15,7 @@ export function LevelNavigation({
   return (
     <div className="flex flex-row items-center justify-between leading-16 mt-6">
       <Button
-        variant="outline"
+        variant="secondary"
         role="reset"
         onClick={(e) => {
           e.preventDefault();
@@ -32,8 +32,8 @@ export function LevelNavigation({
             <Button
               role="radio"
               key={index}
-              variant={active ? "secondary" : "outline"}
-              className="min-w-12"
+              variant={"secondary"}
+              className={`min-w-12 ${active ? "opacity-60" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
                 onChange(index);

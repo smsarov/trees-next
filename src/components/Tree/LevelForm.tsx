@@ -88,7 +88,7 @@ function ColorRow({ level }: { level: number }) {
       <DropdownMenuTrigger
         ref={triggerRef}
         key={`${inputId}-trigger`}
-        className="w-full h-6 rounded-md"
+        className="w-full h-6 rounded-md border-secondary border"
         style={style}
       ></DropdownMenuTrigger>
       <DropdownMenuContent className="overflow-visible p-0">
