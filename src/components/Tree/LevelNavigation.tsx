@@ -19,7 +19,9 @@ export function LevelNavigation({
         role="reset"
         onClick={(e) => {
           e.preventDefault();
-          setDNA(randomDNA());
+          const newDNA = randomDNA();
+          newDNA.branch = [...DNA.branch];
+          setDNA(newDNA);
         }}
       >
         Reset

@@ -2,7 +2,6 @@
 
 import { Branch } from "./branch";
 import { createDefaultBase } from "./helpers";
-import { fullInfo } from "./helpers";
 import p5Types from "p5";
 
 function createSketch(tree: Branch) {
@@ -13,8 +12,6 @@ function createSketch(tree: Branch) {
     const base = createDefaultBase(p5);
 
     tree.initialize(base);
-
-    console.log(fullInfo(tree));
   };
 
   const draw = (p5: p5Types) => {
