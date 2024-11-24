@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { LevelNavigation } from "./LevelNavigation";
-import { LevelForm } from "./LevelForm";
+import { LevelInputs } from "./LevelForm";
 
 function DNAForm() {
   const [level, setLevel] = useState(0);
   return (
-    <div className="w-[400px] font-bold text-xl shadow-lg shadow-amber-800 p-8 rounded-xl">
-      <LevelForm level={level}></LevelForm>
+    <form className="w-[400px] font-semibold text-xl shadow-lg shadow-amber-800 p-8 rounded-xl">
+      <LevelInputs level={level}></LevelInputs>
       <LevelNavigation onChange={setLevel} level={level}></LevelNavigation>
-    </div>
+    </form>
   );
 }
 
