@@ -9,21 +9,22 @@ function getTreeParamName(param: keyof DNA) {
     case "b":
       return "blue";
     case "R":
-      return "size"
+      return "size";
     case "branch":
-      return 'branches'
+      return "branches";
     default:
       return param;
   }
 }
 
-const paramsForForm: readonly (keyof DNA)[] = [
-  'branch',
-  'length',
-  'angle',
-  'curl',
-  'gravity',
-  'R',
-]
+const sliderParams: (keyof DNA)[] = [
+  "branch",
+  "length",
+  "angle",
+  "curl",
+  "gravity",
+  "R",
+] as const;
 
-export {getTreeParamName, paramsForForm}
+
+export { getTreeParamName, sliderParams };
