@@ -1,6 +1,6 @@
 import { useContextDNA } from "@/contexts/VisualEditorContext";
 import { randomDNA } from "@/lib/p5/helpers";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export function LevelNavigation({
   level,

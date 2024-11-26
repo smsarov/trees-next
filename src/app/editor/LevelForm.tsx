@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useContextDNA } from "@/contexts/VisualEditorContext";
-import { getTreeParamName } from "./utils";
 import { DNA } from "@/lib/p5/types";
-import { sliderParams } from "./utils";
-import { Slider } from "../ui/slider";
+import { getTreeParamName, sliderParams } from "@/components/Tree/utils";
+import { Slider } from "@/components/ui/slider";
 import { RgbColorPicker } from "react-colorful";
 
 import {
@@ -93,7 +92,7 @@ function ColorRow({ level }: { level: number }) {
       ></DropdownMenuTrigger>
       <DropdownMenuContent className="overflow-visible p-0">
         <RgbColorPicker
-          role='input'
+          role="input"
           onChange={handleChange}
           id="inputId"
           key={`${inputId}-picker`}

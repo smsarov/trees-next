@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Sketch from "./Sketch";
+import Sketch from "@/components/Tree/Sketch";
 import DNAForm from "./DNAForm";
 
 import { ContextDNA } from "@/contexts/VisualEditorContext";

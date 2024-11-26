@@ -43,7 +43,8 @@ class Branch {
 
   setBase(base: Base) {
     const angle = this.DNA("angle");
-    const sign = this.order % 2 ? -1 : 1;
+    const isLast = this.level && (this.dna.branch[this.level - 1] === this.order + 1);
+    const sign = ((-1) ** this.order) * Number(!isLast);
 
     this.base = { ...base };
     this.pos = this.base.pos.copy();
@@ -58,46 +59,26 @@ class Branch {
         (_, index) => new Branch(this.dna, this.level + 1, index)
       );
     }
-    /*
-     algo breaks when some split points are too close
-     (meaning they correspond to the same step number)
 
-     to fix that we need to count how many times every step
-     occurs and store that in a Map
-     
-     and initialize as many branches at some step as we've counted
-
-     it is a rare case though
-
-     also, we need to loop here because it's hard to calculate
-     the velocity at each split point
-    */
-
-    // TODO: refactor this part
     this.setBase(base);
-
     const length = this.DNA("length");
-    const stepsToSplit = countMap(
-      this.splits.map((ratio) => Math.floor(length * ratio))
-    );
+    const stepMap = this.stepsCount();
 
-    let childrenInitialized = 0;
+    let updated = 0;
     for (let step = 0; step < length; step++) {
-      if (childrenInitialized == this.splits.length) break;
-      this.move();
+      if (updated == this.splits.length) break;
 
-      if (stepsToSplit.has(step)) {
-        const times = stepsToSplit.get(step) as number;
-        for (let i = 0; i < times; i++) {
-          const childBase = this.getCurrentBase(
-            this.splits[childrenInitialized]
-          );
-          const child = this.children[childrenInitialized];
+      this.move();
+      if (stepMap.has(step)) {
+        const count = stepMap.get(step) || 0;
+        for (let i = 0; i < count; i++) {
+          const childBase = this.getCurrentBase(this.splits[updated]);
+          const child = this.children[updated];
 
           child.dna = this.dna;
           child.initialize(childBase);
 
-          childrenInitialized += 1;
+          updated += 1;
         }
       }
     }
@@ -120,7 +101,8 @@ class Branch {
   }
 
   move() {
-    if (!this.pos || !this.vel || !this.base) throw new Error("Base is not defined");
+    if (!this.pos || !this.vel || !this.base)
+      throw new Error("Base is not defined");
     const curl = this.DNA("curl");
     const gravity = this.DNA("gravity");
 
@@ -138,26 +120,42 @@ class Branch {
     p5.circle(this.pos.x, this.pos.y, R);
   }
 
+  stepsCount() {
+    const stepsArray = this.splits.map((r) =>
+      Math.floor(r * this.DNA("length"))
+    );
+    const stepMap = new Map<number, number>();
+    for (let step of stepsArray) {
+      stepMap.set(step, (stepMap.get(step) || 0) + 1);
+    }
+    return stepMap;
+  }
+
   cycle(p5: p5Types) {
     const length = this.DNA("length");
     const maxSplitPoint = this.splits.at(-1) || 1;
     const maxLength = length * maxSplitPoint;
+
+    const stepMap = this.stepsCount();
+
+    let drawn = 0;
     for (let step = 0; step < maxLength; step++) {
       const ratio = step / length;
       this.move();
       this.draw(p5, ratio);
+
+      if (stepMap.has(step)) {
+        const count = stepMap.get(step) || 0;
+        for (let i = 0; i < count; i++) {
+          const child = this.children[drawn];
+          child.cycle(p5);
+          drawn += 1;
+        }
+      }
     }
 
-    this.children.forEach((child) => child.cycle(p5));
     this.isDrawn = true;
   }
-}
-
-function countMap<T>(array: T[]) {
-  return array.reduce((map, value) => {
-    map.set(value, (map.get(value) || 0) + 1);
-    return map;
-  }, new Map<T, number>());
 }
 
 export { Branch };
